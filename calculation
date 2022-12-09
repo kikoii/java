@@ -1,0 +1,35 @@
+package test1;
+
+import java.util.Scanner;
+
+public class Calculation 
+{
+	static String scan1;
+	static String scan2;
+	
+	//構造方法
+	public Calculation(String s1,String s2)
+	{
+		scan1 = s1;
+		scan2 = s2;
+		
+		//解析字串參數為有符號十進位整數
+		int sc1 = Integer.parseInt(scan1); 
+		int sc2 = Integer.parseInt(scan2);
+		
+		//一定要括弧不然數字不會相加
+		System.out.print("result:"+(sc1+sc2));
+	}
+	
+	public static void main(String args[])
+	{
+		Scanner scan = new Scanner(System.in); //輸入
+		System.out.print("first:");
+		scan1 = scan.next();//第一個相加數
+		System.out.print("second:");
+		scan2 = scan.next();//第二個相加數
+		
+		//將數值傳給構造方法使用
+		Calculation add = new Calculation(scan1,scan2);
+	}
+}
