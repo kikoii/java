@@ -1,35 +1,40 @@
 package test1;
 
-import java.util.Scanner;
+import java.util.Scanner;//他自己加的ㄟ
 
 public class Calculation 
 {
-	static String scan1;
-	static String scan2;
-	
-	//構造方法
-	public Calculation(String s1,String s2)
-	{
-		scan1 = s1;
-		scan2 = s2;
-		
-		//解析字串參數為有符號十進位整數
-		int sc1 = Integer.parseInt(scan1); 
-		int sc2 = Integer.parseInt(scan2);
-		
-		//一定要括弧不然數字不會相加
-		System.out.print("result:"+(sc1+sc2));
-	}
-	
 	public static void main(String args[])
 	{
-		Scanner scan = new Scanner(System.in); //輸入
-		System.out.print("first:");
-		scan1 = scan.next();//第一個相加數
-		System.out.print("second:");
-		scan2 = scan.next();//第二個相加數
+		//不給我用整數要字串
+		String add1;
+		String add2;
+		String scan3;
+		//String p = "plus";
 		
-		//將數值傳給構造方法使用
-		Calculation add = new Calculation(scan1,scan2);
+		//輸入
+		Scanner scan = new Scanner(System.in);
+		System.out.println("first:");
+		add1 = scan.next();//第一個相加數
+		System.out.print("second:");
+		add2 = scan.next();//第二個相加數
+		System.out.print("select:");
+		scan3 = scan.next();
+		
+		//解析字串唯有符號十進位整數
+		int add11 = Integer.parseInt(add1);
+		int add22 = Integer.parseInt(add2);
+		int scan33 = Integer.parseInt(scan3);
+		
+		//一定要括弧！不然數字就不會相加ㄌ
+		if(scan33==1) 
+		{
+			System.out.print("result:"+(add11+add22));
+		}
+		if(scan33==2)
+		{
+			System.out.print("result:"+(add11-add22));
+		}
+		
 	}
 }
