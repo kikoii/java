@@ -1,0 +1,32 @@
+package test1;
+
+import java.util.Scanner;
+
+interface Cshape //定義介面
+{
+	final double Pi = 3.14;
+	public abstract void show();
+}
+
+class CCircle implements Cshape
+{
+	double radius;
+	public CCircle(double r)
+	{
+		radius = r;
+	}
+	public void show()
+	{
+		System.out.println("area="+Pi*radius*radius);
+	}
+}
+public class Gui1
+{
+	public static void main(String args[])
+	{
+		Cshape shape1;
+		shape1 = new CCircle(10);
+		shape1.show();
+		
+	}
+}
