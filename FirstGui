@@ -1,14 +1,16 @@
 package test;
 
-import javax.swing.*;
+import javax.swing.*; //使用swing類
 public class Guitest 
 {
 	public static void main(String args[])
 	{
+		//定義一個新的JFrame，叫frame
 		JFrame frame = new JFrame("my first gui");
+		//點及視窗的關閉按鈕時程序執行的動作
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300,200);
-		JButton button = new JButton("press");
+		frame.setSize(300,200); //視窗的長,寬
+		JButton button = new JButton("press"); //button的上面寫press
 		frame.getContentPane().add(button);
 		frame.setVisible(true);
 	}
