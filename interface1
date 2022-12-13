@@ -27,12 +27,12 @@ public class Gui1
 	public static void main(String args[])
 	{
 		Cshape shape1;
+		String s1;
 		Scanner scan1 = new Scanner(System.in);
 		System.out.print("radius:");
-		shape1 = scan1.nextCCircle();
-		//int shape1 = scan1.nextInt();
-
-		shape1 = new CCircle(scan1);
+		s1 = scan1.next();
+		double ds1 = Double.parseDouble(s1);
+		shape1 = new CCircle(ds1);
 		shape1.show();
 		
 	}
