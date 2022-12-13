@@ -4,29 +4,24 @@ import java.util.Scanner;
 
 public class Calculation 
 {
-	static String scan1;
-	static String scan2;
-	static String scan3;
+	static int scan1;
+	static int scan2;
+	static int scan3;
 
 	//構造方法
-	public Calculation(String s1,String s2,String s3)
+	public Calculation(int s1,int s2,int s3)
 	{
 		scan1 = s1;
 		scan2 = s2;
 		scan3 = s3;
-
-		//解析字串參數為有符號十進位整數
-		int sc1 = Integer.parseInt(scan1); 
-		int sc2 = Integer.parseInt(scan2);
-		int sc3 = Integer.parseInt(scan3);
-
-		if (sc3==1)
+		
+		if (s3==1)
 		{
-			System.out.print("result:"+(sc1+sc2));
+			System.out.print("result:"+(s1+s2));
 		}
-		if (sc3==2)
+		if (s3==2)
 		{
-			System.out.print("result:"+(sc1-sc2));
+			System.out.print("result:"+(s1-s2));
 		}
 		//一定要括弧不然數字不會相加
 		
@@ -36,11 +31,12 @@ public class Calculation
 	{
 		Scanner scan = new Scanner(System.in); //輸入
 		System.out.print("first:");
-		scan1 = scan.next();//第一個相加數
+		//使用nextInet讓他讀取整數
+		int scan1 = scan.nextInt();//第一個相加數
 		System.out.print("second:");
-		scan2 = scan.next();//第二個相加數
+		int scan2 = scan.nextInt();//第二個相加數
 		System.out.print("choose:");
-		scan3 = scan.next();//第二個相加數
+		int scan3 = scan.nextInt();//第二個相加數
 
 		//將數值傳給構造方法使用
 		Calculation add = new Calculation(scan1,scan2,scan3);
