@@ -26,15 +26,13 @@ public class Gui1
 	static String scan1;
 	public static void main(String args[])
 	{
-		//Cshape shape1;
-		
+		Cshape shape1;
 		Scanner scan1 = new Scanner(System.in);
 		System.out.print("radius:");
-		//int sc1 = Integer.parseUnsignedInt(scan1);
-		int shape1 = scan1.nextInt();
-		
-		
-		shape1 = new CCircle();
+		shape1 = scan1.nextCCircle();
+		//int shape1 = scan1.nextInt();
+
+		shape1 = new CCircle(scan1);
 		shape1.show();
 		
 	}
