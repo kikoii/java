@@ -1,0 +1,42 @@
+package test1; //test1套件
+
+import javax.swing.*; //
+import java.awt.*;
+import java.awt.event.*;
+
+public class InnerEX extends JFrame
+{
+	JButton clickME = new JButton("請按我!");
+	JLabel label = new JLabel("按鈕未被按下");
+
+	int clickCount = 0;
+
+	class alClickME implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			clickCount ++;
+			label.setText("[" + e.getActionCommand()+ "] 按鈕被按了" + clickCount + "次");
+		}	
+	}
+
+	InnerEX()
+	{
+		Container cp = getContentPane();
+
+		cp.add(clickME, BorderLayout.CENTER);
+		cp.add(label, BorderLayout.SOUTH);
+
+		alClickME al = new alClickME();
+		clickME.addActionListener(al);
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pack();
+		setVisible(true);
+	}
+
+	public static void main(String args[]) 
+	{
+		new InnerEX();
+	}
+}
