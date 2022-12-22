@@ -1,0 +1,220 @@
+package test1;
+
+import java.awt.*;
+import java.awt.event.*;
+public class OXMain extends Frame implements ActionListener {
+    private OX oxBoard;
+    private OXMain() {
+        super("井字遊戲");
+        Menu m;
+        MenuBar mb;
+        oxBoard = new OX(this);
+        this.add(oxBoard);
+        CloseWindow close = new CloseWindow(this, true);
+        this.setMenuBar(mb = new MenuBar());
+        mb.add(m = new Menu("遊戲")).add(new MenuItem("新遊戲")).addActionListener(this);
+        m.add(new MenuItem("結束")).addActionListener(close);
+        mb.add(new Menu("說明")).add(new MenuItem("關於本遊戲")).addActionListener(this);
+        this.addWindowListener(close);
+        pack();
+        setVisible(true);
+    }
+    public static void main(String argv[]) {
+        new OXMain();
+    }
+    // implements the ActionListener interface
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        if (command.equals("關於本遊戲")) {
+             new ErrorDialog(this,"俞旭昇寫好玩的");
+        } else if (command.equals("新遊戲")) {
+            oxBoard.newGame();
+        }
+    }
+}
+class OX extends Component implements MouseListener {
+    public static final byte EMPTY = 0;
+    public static final byte CIRCLE = 1;
+    public static final byte CROSS = 2;
+    private byte[] board = new byte[9];
+    private byte playing = CIRCLE;
+    private Dimension mySize = new Dimension(300,300);
+    private Frame parent;
+    private byte[][] directions = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
+    public OX(Frame p) {
+        this.addMouseListener(this);
+        parent = p;
+    }
+    // The following 5 functions implement the MouseListener interface
+    public void mouseClicked(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+        int row = e.getY()/100;
+        int col = e.getX()/100;
+        if (row >= 3 || col >= 3) return; // 超過邊界
+        if (board[row*3+col] == EMPTY) { // 此位置可以下
+            board[row*3+col] = playing;
+            repaint(); // notify Window Manager
+            // Anyone Win?
+            for (int i=0; i < directions.length; i++) {
+                int j;
+                for (j = 0; j < 3 && board[directions[i][j]]==playing; j++) ;
+                if (j==3) {
+                    if (playing == CIRCLE) {
+                        new ErrorDialog(parent,"圓圈贏了");
+                    } else if (playing == CROSS) {
+                        new ErrorDialog(parent,"叉叉贏了");
+                    }
+                    this.newGame();
+                    return;
+                }
+            }
+            playing ^= 0x03;
+        }
+    }
+    // override paint() defined in Component
+    public void paint(Graphics g) {
+        g.drawLine(0,100,300,100);  g.drawLine(0,200,300,200);
+        g.drawLine(100,0,100,300);  g.drawLine(200,0,200,300);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i*3+j] == CIRCLE) {
+                    g.drawOval(50+j*100-25,50+i*100-25,50,50);
+                } else if (board[i*3+j] == CROSS) {
+                    g.drawLine(25+j*100,25+i*100,75+j*100,75+i*100);
+                    g.drawLine(75+j*100,25+i*100,25+j*100,75+i*100);
+                }
+            }
+        }
+    }
+    public void newGame() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i*3+j] = EMPTY;
+            }
+        }
+        playing = CIRCLE;
+        repaint();
+    }
+    // override getPreferredSize defined in Component,
+    // so that the Component has proper size on screen
+    public Dimension getPreferredSize() {
+        return mySize;
+    }
+}
+// WindowAdapter implements the WindowLister interface
+// We extends WindowAdapter to reduce the line numer of code
+class CloseWindow extends WindowAdapter implements ActionListener {
+    private Window target;
+    private boolean exit;
+    public CloseWindow(Window target, boolean exit) {
+        this.target = target;
+        this.exit = exit;
+    }
+    public CloseWindow(Window target) {
+        this.target = target;
+    }
+    public void windowClosing(WindowEvent e) {
+        target.dispose();
+        if (exit) System.exit(0);
+    }
+    public void actionPerformed(ActionEvent e) {
+        target.dispose();
+        if (exit) System.exit(0);
+    }
+}
+class AddConstraint {
+    public static void addConstraint(Container container, Component component,
+          int grid_x, int grid_y, int grid_width, int grid_height,
+          int fill, int anchor, double weight_x, double weight_y,
+          int top, int left, int bottom, int right) {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = grid_x; c.gridy = grid_y;
+        c.gridwidth = grid_width; c.gridheight = grid_height;
+        c.fill = fill; c.anchor = anchor;
+        c.weightx = weight_x; c.weighty = weight_y;
+        c.insets = new Insets(top,left,bottom,right);
+        ((GridBagLayout)container.getLayout()).setConstraints(component,c);
+        container.add(component);
+    }
+}
+class ErrorDialog extends Dialog {
+    public ErrorDialog(Frame parent, String all[]) {
+        this(parent, all, null);
+    }
+    public ErrorDialog(Frame parent, String all[], String msg) {
+        super(parent,"",true);
+        StringBuffer sb = new StringBuffer();
+        for (int i=0; i < all.length; i++) {
+            sb.append(all[i]);
+            sb.append('\n');
+        }
+        if (msg!=null) {
+            sb.append(msg);
+        }
+        setup(parent, sb.toString());
+    }
+    public ErrorDialog(Frame parent, String message) {
+        super(parent,"",true);
+        setup(parent, message);
+    }
+    private void setup(Frame parent, String message) {
+        this.setLayout(new GridBagLayout());
+        int row=0, col=0, i, width=0;
+        Font font = new Font("Serif", Font.PLAIN, 16);
+        char c=' ';
+        for (i = 0; i < message.length(); i++) {
+            c = message.charAt(i);
+            if (c=='\n') {
+               row++;
+               if (width > col) {
+                   col = width;
+               }
+               width=0;
+            } else if (c == '\t') {
+                width += 7-width%7;
+            } else {
+                if (c > 0x00FF) {
+                    width+=2;
+                } else {
+                    width++;
+                }
+            }
+        }
+        if (c!='\n') {
+           row++;
+           if (width > col) {
+               col = width;
+           }
+        }
+        col++;
+        // 希望視窗出來不要太大或太小
+        row = (row > 24) ? 24 : row;
+        if (row < 5) {
+            row=5;
+        }
+        if (col < 20) {
+            col = 20;
+        }
+        TextArea tx = new TextArea(message,row,col);
+        tx.setEditable(false);
+        tx.setFont(font);
+        AddConstraint.addConstraint(this, tx, 0, 0, 1, 1,
+            GridBagConstraints.BOTH,
+            GridBagConstraints.NORTHWEST,
+            1,1,0,0,0,0);
+        Button b = new Button("確定");
+        b.setFont(font);
+        AddConstraint.addConstraint(this, b, 0, 1, 1, 1,
+            GridBagConstraints.HORIZONTAL,
+            GridBagConstraints.CENTER,
+            1,0,0,0,0,0);
+        CloseWindow cw = new CloseWindow(this);
+        this.addWindowListener(cw);
+        b.addActionListener(cw);
+        pack();
+        setVisible(true);
+    }
+}
