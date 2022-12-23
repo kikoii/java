@@ -1,4 +1,4 @@
-package test1; //套件test1
+package test1;
 
 import java.awt.*;
 import javax.swing.*;
@@ -7,23 +7,10 @@ public class CalTest extends Frame
 {
 	public static void main(String args[])
 	{
-		//建立一個標題為frame的視窗，也可以用frame.setTitle("frame")代替
 		JFrame frame = new JFrame("frame");
-		//設定視窗大小(長，寬)
 		frame.setSize(300, 400);
-		//設定視窗開啟時的位置，設定左上角的座標
-	//	frame.setLocation(800, 300);//剛好差不多在螢幕中間
-		//也可以設定開啟位置和某物件相同，如果輸入null就會在畫面中間開啟
 		frame.setLocationRelativeTo(null);
-		
-		//這是按下關閉選項(右上角叉叉)後的動作
-		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);//關閉程式
-		/*
-		DISPOSE_ON_CLOSE：關閉顯示的視窗跟使用的資源，但程式在背景執行 
-		HIDE_ON_CLOSE：隱藏顯示的視窗，程式仍然在背景執行
-		 */
-		
-		//設定視窗顯示，沒設定的話視窗只會在背景執行
+		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 	
