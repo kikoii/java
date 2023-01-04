@@ -1,0 +1,63 @@
+package test;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.JFrame;
+
+public class buttontest extends JFrame
+{
+	public static void main(String[] args) 
+	{
+		JFrame jframe = new JFrame("frame");
+		jframe.setSize(300,400);
+		jframe.setLocationRelativeTo(null);
+		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jframe.setVisible(true);
+		
+		jframe.getContentPane().setLayout(new FlowLayout(FlowLayout.LEFT));
+		JLabel label = new JLabel();
+		JButton button1 = new JButton("1");
+		JButton button2 = new JButton("2");
+		JButton button3 = new JButton("3");
+		JButton button4 = new JButton("4");
+		
+		button1.addActionListener(new MyAction());
+		button2.addActionListener(new MyAction());
+		button3.addActionListener(new MyAction());
+		button4.addActionListener(new MyAction());
+		
+		jframe.add(label);
+		jframe.add(button1);
+		jframe.add(button2);
+		jframe.add(button3);
+		jframe.add(button4);
+		
+		jframe.setVisible(true);
+
+		
+		ExitWindows(jframe);
+		
+	}
+	
+	private static void ExitWindows(Frame jframe)
+	{
+		jframe.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				System.exit(0);
+			}
+		});
+	}
+}
+
+class MyAction implements ActionListener
+{
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		System.out.println("out:"+e.getActionCommand());
+	}
+}
